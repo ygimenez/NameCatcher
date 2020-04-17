@@ -30,16 +30,17 @@ public class Main extends TrayIcon {
 				MenuItem selectWindow = new MenuItem("Selecionar janela");
 				selectWindow.addActionListener(evt -> {
 					List<WindowData> windows = WindowHandler.getAllWindowNames();
-					selectedWindow = windows.get(JOptionPane.showOptionDialog(
+					int index = JOptionPane.showOptionDialog(
 							null,
 							"Por favor escolha uma janela para capturar o título.",
 							"Selecione uma janela",
 							JOptionPane.OK_CANCEL_OPTION,
 							JOptionPane.PLAIN_MESSAGE,
 							null,
-							windows.toArray(),
+							windows.stream().map(w -> w.getTitle().substring(0, Math.min(w.getTitle().length(), 10))).toArray(),
 							null
-					));
+					);
+					if (index != -1) selectedWindow = windows.get(index);
 				});
 
 				MenuItem exit = new MenuItem("Sair");
